@@ -3,67 +3,105 @@ import json
 import requests
 import random
 import datetime
-
 # sectets字段录入
-deptId = eval(input())
-deptText = input()
 areaStr = input()
-stuNo = input()
-username = input()
-userid = input()
+customerid = input()
+deptid = input()
+emergencyContact = input()
+mergencyPeoplePhone = input()
+ownPhone = input()
+phonenum = input()
+reportdate = input()
 sckey = input()
-
-# 时间判断
-now = time.localtime().tm_hour + 8
-if (now >= 6) & (now < 8):
-    templateid = "clockSign1"
-    customerAppTypeRuleId = 146
-elif (now >= 12) & (now < 14):
-    templateid = "clockSign2"
-    customerAppTypeRuleId = 147
-elif (now >= 21) & (now< 22):
-    templateid = "clockSign3"
-    customerAppTypeRuleId = 148
-else:
-    print("现在是%d点%d分，打卡时间将自动打卡" %(now,time.localtime().tm_min))
-    exit(0)
-
-# 随机温度(36.2~36.8)
-a = random.uniform(36.2, 36.4)
-temperature = round(a, 1)
+stuNo = input()
+TEXT = input()
+token = input()
+userid = input()
+username = input()
+#时间设置
+a=time.time()
+bbb=int(round(a*1000)+28800000)
 
 sign_url = "https://reportedh5.17wanxiao.com/sass/api/epmpics"
 
 jsons = {
-    "businessType": "epmpics",
-    "method": "submitUpInfoSchool",
-    "jsonData": {
-        "deptStr": {
-            "deptid": deptId,
-            "text": deptText
-        },
-        "areaStr": areaStr,
-        "reportdate": round(time.time() * 1000),
-        "customerid": 43,
-        "deptid": deptId,
-        "source": "app",
-        "templateid": templateid,
-        "stuNo": stuNo,
-        "username": username,
-        "userid": userid,
-        "updatainfo": [
-            {
-                "propertyname": "temperature",
-                "value": temperature
-            },
-            {
-                "propertyname": "symptom",
-                "value": "无症状"
-            }
-        ],
-        "customerAppTypeRuleId": customerAppTypeRuleId,
-        "clockState": 0
-    },
+		"businessType": "epmpics",
+	"method": "submitUpInfo",
+	"jsonData": {
+		"add": false,
+		"areaStr":areaStr,
+		"cardNo": null,
+		"customerid": customerid,
+		"deptStr": {
+			"deptid": deptid,
+			"text": TEXT
+		},
+		"phonenum": phonenum,
+		"stuNo": stuNo,
+		"templateid": "pneumonia",
+		"upTime": null,
+		"userid": userid,
+		"username":username,
+		"deptid": deptid,
+		"updatainfo": [
+			{
+				"propertyname": "wendu",
+				"value": "36.4"
+			},
+			{
+				"propertyname": "symptom",
+				"value": "无症状"
+			},
+			{
+				"propertyname": "jkzks",
+				"value": "正常"
+			},
+			{
+				"propertyname": "jtcy",
+				"value": "否"
+			},
+			{
+				"propertyname": "SFJCQZHYS",
+				"value": "否"
+			},
+			{
+				"propertyname": "sfddgr",
+				"value": "否"
+			},
+			{
+				"propertyname": "isTouch",
+				"value": "否"
+			},
+			{
+				"propertyname": "是否途径或逗留过疫情中，高风险地区？",
+				"value": ""
+			},
+			{
+				"propertyname": "isAlreadyInSchool",
+				"value": "没有"
+			},
+			{
+				"propertyname": "hsjc0511",
+				"value": "否"
+			},
+			{
+				"propertyname": "ownPhone",
+				"value": ownPhone
+			},
+			{
+				"propertyname": "emergencyContact",
+				"value": emergencyContact
+			},
+			{
+				"propertyname": "mergencyPeoplePhone",
+				"value": mergencyPeoplePhone
+			}
+		],
+		"source": "app",
+		"reportdate": bbb,
+		"gpsType": 0,
+		"token": token
+	},
 }
 # 提交打卡
 response = requests.post(sign_url, json=jsons)
@@ -91,4 +129,3 @@ data = {
     "desp": content
 }
 req = requests.post(sckey, data=data)
-
